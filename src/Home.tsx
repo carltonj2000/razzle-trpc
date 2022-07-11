@@ -4,8 +4,10 @@ import fetch from "node-fetch";
 import { createTRPCClient } from "@trpc/client";
 import type { TRpcRouter } from "./api";
 
+global.fetch = fetch;
+
 export const Home = () => {
-  const client = createTRPCClient<TRpcRouter>({ url: "trpc", fetch });
+  const client = createTRPCClient<TRpcRouter>({ url: "trpc" });
   const [data, dataSet] = React.useState(null);
   const loadData = async () => {
     const json = await fetch("/api/hello");
