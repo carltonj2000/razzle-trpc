@@ -6,6 +6,8 @@ import { StaticRouter } from "react-router-dom";
 
 import App from "./App";
 
+import { api, tRpcMw } from "./api";
+
 let assets: any;
 
 const syncLoadAssets = () => {
@@ -69,9 +71,8 @@ export const renderApp = (req: express.Request, res: express.Response) => {
 const server = express()
   .disable("x-powered-by")
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  .get("/api/hello", (req: express.Request, res: express.Response) => {
-    res.send("howdy!");
-  })
+  .use("/api", api)
+  .use("/trpc", tRpcMw)
   .get("/*", (req: express.Request, res: express.Response) => {
     const { html = "", redirect = false } = renderApp(req, res);
     if (redirect) {
